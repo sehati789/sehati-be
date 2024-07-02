@@ -2,14 +2,16 @@ package id.sehatibe.service;
 
 import id.sehatibe.model.Product;
 import id.sehatibe.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Product save(Product product) {
@@ -23,9 +25,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public String deleteById(String id) {
+    public void deleteById(String id) {
         productRepository.deleteById(id);
-        return id;
     }
 
     @Override
