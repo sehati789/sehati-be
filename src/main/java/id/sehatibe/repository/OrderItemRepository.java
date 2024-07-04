@@ -1,10 +1,9 @@
 package id.sehatibe.repository;
 
-import id.sehatibe.model.User;
+import id.sehatibe.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
-
+public interface OrderItemRepository extends JpaRepository<OrderItem, String> {
 }
