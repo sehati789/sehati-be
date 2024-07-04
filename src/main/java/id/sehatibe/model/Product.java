@@ -15,10 +15,10 @@ public class Product {
     String productId;
     String productName;
     String category;
-    Long retailPrice;
-    Long basePrice;
-    Long stock;
+    int retailPrice;
+    int basePrice;
+    int stock;
     String description;
-    Long discountPrice = 0L;
+    int discountPrice = 0;
     String image;
 }
