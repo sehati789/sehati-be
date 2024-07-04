@@ -21,4 +21,8 @@ public class Product {
     String description;
     int discountPrice = 0;
     String image;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    OrderItem orderItem;
 }
