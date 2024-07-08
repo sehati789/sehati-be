@@ -9,5 +9,5 @@ public interface ProductService {
     public Product getById(String id);
     public void deleteById(String id);
     public List<Product> getAll();
-
+    public List<String> getAllCategory();
 }

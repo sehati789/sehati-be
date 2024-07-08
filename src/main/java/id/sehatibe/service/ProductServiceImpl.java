@@ -2,6 +2,7 @@ package id.sehatibe.service;
 
 import id.sehatibe.model.Product;
 import id.sehatibe.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> getAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<String> getAllCategory() {
+        List<String> result = productRepository.getAllCategories();
+        return result;
     }
 }
