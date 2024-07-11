@@ -1,5 +1,6 @@
 package id.sehatibe.controller;
 
+import id.sehatibe.dto.OrderResponseDto;
 import id.sehatibe.model.*;
 import id.sehatibe.service.*;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +29,14 @@ public class OrderController {
     UserService userService;
 
     @PostMapping()
-    public Order create(){
+    public OrderResponseDto create(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         List<CartProduct> cartProducts = cartProductService.getByCart(currentUser);
         Order order = new Order();
         orderService.save(order);
         userService.addOrder(currentUser.getPhoneNumber(), order);
+        Double total=0.0;
         for (CartProduct cartProduct: cartProducts){
             Product product = cartProduct.getProduct();
             int finalProductPrice = product.getRetailPrice()-product.getDiscountPrice();
@@ -49,11 +51,15 @@ public class OrderController {
                     .totalPrice(finalProductPrice * amount)
                     .build();
             order.addOrderItem(orderItem);
-
+            total+= orderItem.getTotalPrice();
             orderItemService.save(orderItem);
 
         }
+        order.setTotal(total);
         orderService.save(order);
-        return order;
+        return OrderResponseDto.builder()
+                .id(order.getId())
+                .total(order.getTotal())
+                .build();
     }
 }
