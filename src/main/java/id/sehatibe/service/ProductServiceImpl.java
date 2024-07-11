@@ -33,4 +33,9 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> getAll() {
         return productRepository.findAll();
     }
+
+    @Override
+    public List<Product> getByCart(String id) {
+        return productRepository.getProductInUserCart(id);
+    }
 }

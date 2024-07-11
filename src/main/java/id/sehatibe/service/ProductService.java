@@ -10,4 +10,7 @@ public interface ProductService {
     public void deleteById(String id);
     public List<Product> getAll();
 
+    public List<Product> getByCart(String id);
+
+
 }
