@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter @Setter
 @Entity
 @NoArgsConstructor
@@ -22,7 +25,6 @@ public class Product {
     int discountPrice = 0;
     String image;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    OrderItem orderItem;
+    @ManyToMany(mappedBy = "products")
+    private Set<Cart> carts = new HashSet<>();
 }

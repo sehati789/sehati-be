@@ -16,8 +16,8 @@ public class OrderItem {
 
     private Double amount;
 
-    @OneToOne(mappedBy = "orderItem", cascade = CascadeType.ALL)
-    private Product product;
+    private String productName;
+    private int productPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
