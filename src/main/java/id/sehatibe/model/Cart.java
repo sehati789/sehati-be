@@ -20,12 +20,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "products_cart",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Set<Product> products = new HashSet<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartProduct> cartProducts = new HashSet<>();
 
 }

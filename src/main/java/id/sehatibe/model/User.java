@@ -73,4 +73,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    public void addOrder(Order order){
+        orders.add(order);
+        order.setUser(this);
+    }
 }

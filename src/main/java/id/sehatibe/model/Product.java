@@ -25,6 +25,6 @@ public class Product {
     int discountPrice = 0;
     String image;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Cart> carts = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartProduct> cartProducts = new HashSet<>();
 }
