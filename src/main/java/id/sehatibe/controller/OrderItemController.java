@@ -1,5 +1,6 @@
 package id.sehatibe.controller;
 
+import id.sehatibe.dto.OrderItemResponseDto;
 import id.sehatibe.model.OrderItem;
 import id.sehatibe.service.OrderItemService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,21 @@ import java.util.List;
 public class OrderItemController {
     private final OrderItemService orderItemService;
     @GetMapping
-    public List<OrderItem> getByOrder(@RequestParam(value = "order_id") String orderId){
-        return orderItemService.getByOrderId(orderId);
+    public List<OrderItemResponseDto> getByOrder(@RequestParam(value = "order_id") String orderId){
+        List<OrderItem> orderItems= orderItemService.getByOrderId(orderId);
+        return orderItems.stream().map(this::toOrderItemResponse).toList();
+    }
+
+    private OrderItemResponseDto toOrderItemResponse(OrderItem orderItem){
+        return OrderItemResponseDto.builder()
+                .orderId(orderItem.getOrder().getId())
+                .notes(orderItem.getNotes())
+                .amount(orderItem.getAmount())
+                .productName(orderItem.getProductName())
+                .productPrice(orderItem.getProductPrice())
+                .profit(orderItem.getProfit())
+                .totalPrice(orderItem.getTotalPrice())
+                .build();
     }
 
 

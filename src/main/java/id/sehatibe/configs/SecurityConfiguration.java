@@ -50,6 +50,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/admin/**")
                 .permitAll()
+                .requestMatchers("/api/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
