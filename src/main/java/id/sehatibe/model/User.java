@@ -2,7 +2,9 @@ package id.sehatibe.model;
 
 import id.sehatibe.enums.Role;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -74,8 +76,4 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public void addOrder(Order order){
-        orders.add(order);
-        order.setUser(this);
-    }
 }

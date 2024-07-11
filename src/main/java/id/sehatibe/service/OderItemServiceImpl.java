@@ -4,14 +4,16 @@ import id.sehatibe.model.OrderItem;
 import id.sehatibe.repository.OrderItemRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class OderItemServiceImpl implements OrderItemService{
-    private final OrderItemRepository orderItemRepository;
+    @Autowired
+    OrderItemRepository orderItemRepository;
     @Override
     public List<OrderItem> getByOrderId(String orderId) {
         return orderItemRepository.findAllByOrder_Id(orderId);

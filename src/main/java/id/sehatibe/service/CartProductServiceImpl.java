@@ -5,14 +5,16 @@ import id.sehatibe.model.CartProduct;
 import id.sehatibe.model.User;
 import id.sehatibe.repository.CartProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class CartProductServiceImpl implements CartProductService{
-    private CartProductRepository cartProductRepository;
+    @Autowired
+    CartProductRepository cartProductRepository;
     @Override
     public List<CartProduct> getByCart(User user) {
        return cartProductRepository.findByCart_User(user);

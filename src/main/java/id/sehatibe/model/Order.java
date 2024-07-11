@@ -21,7 +21,7 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "phoneNumber")
     private User user;
 
-    private Date deliveryDate= new Date();
+    private Date deliveryDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();

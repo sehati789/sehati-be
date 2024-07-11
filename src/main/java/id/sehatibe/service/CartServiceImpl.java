@@ -4,11 +4,13 @@ import id.sehatibe.model.Cart;
 import id.sehatibe.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
+@Service
 public class CartServiceImpl implements CartService{
-    private final CartRepository cartRepository;
+    CartRepository cartRepository;
 
     @Override
     public Cart getById(String idUser) {

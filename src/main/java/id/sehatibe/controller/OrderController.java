@@ -3,6 +3,8 @@ package id.sehatibe.controller;
 import id.sehatibe.model.*;
 import id.sehatibe.service.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +16,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
-@RequiredArgsConstructor
+
 public class OrderController {
+    @Autowired
     CartProductService cartProductService;
+    @Autowired
     OrderService orderService;
+    @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    UserService userService;
 
     @PostMapping()
     public Order create(){
@@ -26,7 +33,8 @@ public class OrderController {
         User currentUser = (User) authentication.getPrincipal();
         List<CartProduct> cartProducts = cartProductService.getByCart(currentUser);
         Order order = new Order();
-        currentUser.addOrder(order);
+        orderService.save(order);
+        userService.addOrder(currentUser.getPhoneNumber(), order);
         for (CartProduct cartProduct: cartProducts){
             Product product = cartProduct.getProduct();
             int finalProductPrice = product.getRetailPrice()-product.getDiscountPrice();
