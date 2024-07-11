@@ -32,18 +32,37 @@ public class AuthenticationService {
 
     public User signup(RegisterUserDto input) {
         User exist = userRepository.findById(input.getPhoneNumber()).orElse(null);
+        User user ;
         if(exist!=null){
             if (exist.getPassword()!=null){
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone Number already used, please use another");
             }
+            else{
+                exist.setAddress(input.getAddress());
+                exist.setRole(Role.valueOf(input.getRole()));
+                exist.setName(input.getName());
+                exist.setPassword( passwordEncoder.encode(input.getPassword()));
+                return userRepository.save(exist);
+            }
         }
-        User user = User.builder()
-                .address(input.getAddress())
-                .role(Role.valueOf(input.getRole()))
-                .phoneNumber(input.getPhoneNumber())
-                .name(input.getName())
-                .password(passwordEncoder.encode(input.getPassword()))
-                .build();
+        if(input.getPassword()==null){
+            user = User.builder()
+                    .address(input.getAddress())
+                    .role(Role.valueOf(input.getRole()))
+                    .phoneNumber(input.getPhoneNumber())
+                    .name(input.getName())
+                    .build();
+        }
+        else{
+            user = User.builder()
+                    .address(input.getAddress())
+                    .role(Role.valueOf(input.getRole()))
+                    .phoneNumber(input.getPhoneNumber())
+                    .name(input.getName())
+                    .password(passwordEncoder.encode(input.getPassword()))
+                    .build();
+        }
+
 
         return userRepository.save(user);
     }
