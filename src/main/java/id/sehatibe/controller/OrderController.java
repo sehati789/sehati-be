@@ -1,6 +1,7 @@
 package id.sehatibe.controller;
 
 import id.sehatibe.dto.EditOrderRequestDto;
+import id.sehatibe.dto.OrderItemRequest;
 import id.sehatibe.dto.OrderResponseDto;
 import id.sehatibe.model.*;
 import id.sehatibe.service.*;
@@ -42,7 +43,14 @@ public class OrderController {
         Double total=0.0;
         for (CartProduct cartProduct: cartProducts){
             Product product = cartProduct.getProduct();
-            OrderItem orderItem = createOrderItem(cartProduct, product);
+            OrderItemRequest orderItemRequest= OrderItemRequest.builder()
+                    .idOrder(order.getId())
+                    .idProduct(product.getProductId())
+                    .amount(cartProduct.getQuantity())
+                    .note(cartProduct.getNote())
+                    .build();
+
+            OrderItem orderItem = orderItemService.create(orderItemRequest );
             order.addOrderItem(orderItem);
             total+= orderItem.getTotalPrice();
             orderItemService.save(orderItem);
@@ -53,17 +61,12 @@ public class OrderController {
 
         cartProductService.deleteByCartId(currentUser.getPhoneNumber());
 
-        return OrderResponseDto.builder()
-                .id(order.getId())
-                .total(order.getTotal())
-                .ShippingFee(order.getShippingFee())
-                .deliveryDate(order.getDeliveryDate())
-                .build();
+        return toOrderResponseDto(order);
     }
 
     @GetMapping("/{idOrder}")
     public OrderResponseDto getById(@PathVariable("idOrder") String id){
-        return orderService.getById(id);
+        return toOrderResponseDto(orderService.getById(id));
     }
     @DeleteMapping("/{idOrder}")
     public ResponseEntity<String> deleteById(@PathVariable("idOrder") String id){
@@ -73,22 +76,15 @@ public class OrderController {
 
     @PatchMapping("/{idOrder}")
     public OrderResponseDto editDeliveryDateAndShippingFeeById(@PathVariable("idOrder") String id, @RequestBody EditOrderRequestDto request){
-        return orderService.editById(id, request);
+        return toOrderResponseDto(orderService.editById(id, request));
     }
 
-    private OrderItem createOrderItem(CartProduct cartProduct, Product product){
-        int finalProductPrice = product.getRetailPrice()-product.getDiscountPrice();
-        Double amount = cartProduct.getQuantity();
-        return  OrderItem.builder()
-                .amount(amount)
-                .productName(product.getProductName())
-                .finalProductPrice(finalProductPrice)
-                .notes(cartProduct.getNote())
-                .profit(finalProductPrice * amount - product.getBasePrice()*amount )
-                .totalPrice(finalProductPrice * amount)
-                .baseProductPrice(product.getBasePrice())
+    private OrderResponseDto toOrderResponseDto(Order order){
+        return OrderResponseDto.builder()
+                .id(order.getId())
+                .total(order.getTotal())
+                .deliveryDate(order.getDeliveryDate())
+                .ShippingFee(order.getShippingFee())
                 .build();
     }
-
-
 }

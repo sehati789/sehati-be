@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-//TODO: bikin api buat put order item skaligus ganti total di order
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

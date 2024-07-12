@@ -6,11 +6,11 @@ import id.sehatibe.model.Order;
 
 
 public interface OrderService {
-    public OrderResponseDto save(Order order);
+    public Order save(Order order);
 
-    public OrderResponseDto getById(String id);
+    public Order getById(String id);
     public void deleteById(String id);
 
-    public OrderResponseDto editById(String id, EditOrderRequestDto request);
+    public Order editById(String id, EditOrderRequestDto request);
 
 }

@@ -15,15 +15,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
-    public OrderResponseDto save(Order order){
-        orderRepository.save(order);
-        return toOrderResponseDto(order);
+    public Order save(Order order){
+        return orderRepository.save(order);
+
     }
 
     @Override
-    public OrderResponseDto getById(String id) {
-        Order order = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
-        return toOrderResponseDto(order);
+    public Order getById(String id) {
+        return orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
     }
     @Override
     public void deleteById(String id) {
@@ -31,21 +30,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto editById(String id, EditOrderRequestDto request) {
+    public Order editById(String id, EditOrderRequestDto request) {
         Order order = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
         order.setShippingFee(request.getShippingFee());
         order.setDeliveryDate(request.getDeliveryDate());
-        orderRepository.save(order);
-
-        return toOrderResponseDto(order);
+        return orderRepository.save(order);
     }
 
-    private OrderResponseDto toOrderResponseDto(Order order){
-        return OrderResponseDto.builder()
-                .id(order.getId())
-                .total(order.getTotal())
-                .deliveryDate(order.getDeliveryDate())
-                .ShippingFee(order.getShippingFee())
-                .build();
-    }
+
 }
