@@ -32,6 +32,12 @@ public class OderItemServiceImpl implements OrderItemService{
         OrderItem orderItem=  orderItemRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
         return toOrderItemResponse(orderItem);
     }
+
+    @Override
+    public void deleteById(String id) {
+        orderItemRepository.deleteById(id);
+    }
+
     public OrderItemResponseDto save(OrderItem orderItem){
         orderItemRepository.save(orderItem);
         return toOrderItemResponse(orderItem);
@@ -50,6 +56,7 @@ public class OderItemServiceImpl implements OrderItemService{
     }
     private OrderItemResponseDto toOrderItemResponse(OrderItem orderItem){
         return OrderItemResponseDto.builder()
+                .id(orderItem.getId())
                 .orderId(orderItem.getOrder().getId())
                 .notes(orderItem.getNotes())
                 .amount(orderItem.getAmount())

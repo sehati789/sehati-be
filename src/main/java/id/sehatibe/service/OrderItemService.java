@@ -11,4 +11,7 @@ public interface OrderItemService{
 
     public OrderItemResponseDto edit(OrderItem orderItem);
     public OrderItemResponseDto getById(String id);
+    public void  deleteById(String id);
+
+
 }

@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class OrderItemResponseDto {
+    private String id;
     private Double amount;
 
     private String productName;
