@@ -6,6 +6,7 @@ import id.sehatibe.service.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -65,4 +66,11 @@ public class OrderController {
     public OrderResponseDto getById(@PathVariable("idOrder") String id){
         return orderService.getById(id);
     }
+    @DeleteMapping("/{idOrder}")
+    public ResponseEntity<String> deleteById(@PathVariable("idOrder") String id){
+        orderService.deleteById(id);
+        return ResponseEntity.ok("Success deleting order with id "+id);
+    }
+
+
 }

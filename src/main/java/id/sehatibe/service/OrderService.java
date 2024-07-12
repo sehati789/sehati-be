@@ -8,5 +8,6 @@ public interface OrderService {
     public OrderResponseDto save(Order order);
 
     public OrderResponseDto getById(String id);
+    public void deleteById(String id);
 
 }

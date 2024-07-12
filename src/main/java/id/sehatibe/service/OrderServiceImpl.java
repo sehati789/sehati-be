@@ -23,6 +23,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
         return toOrderResponseDto(order);
     }
+    @Override
+    public void deleteById(String id) {
+        orderRepository.deleteById(id);
+    }
 
     private OrderResponseDto toOrderResponseDto(Order order){
         return OrderResponseDto.builder()
