@@ -16,7 +16,12 @@ public class CartProductServiceImpl implements CartProductService{
     @Autowired
     CartProductRepository cartProductRepository;
     @Override
-    public List<CartProduct> getByCart(User user) {
+    public List<CartProduct> getByCartUser(User user) {
        return cartProductRepository.findByCart_User(user);
+    }
+
+    @Override
+    public void deleteByCartId(String id){
+        cartProductRepository.deleteCartProductByCart_Id(id);
     }
 }

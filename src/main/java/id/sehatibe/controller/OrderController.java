@@ -31,25 +31,18 @@ public class OrderController {
     public OrderResponseDto create(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        List<CartProduct> cartProducts = cartProductService.getByCart(currentUser);
+
+        List<CartProduct> cartProducts = cartProductService.getByCartUser(currentUser);
+
         Order order = new Order();
         orderService.save(order);
+
         userService.addOrder(currentUser.getPhoneNumber(), order);
+
         Double total=0.0;
         for (CartProduct cartProduct: cartProducts){
             Product product = cartProduct.getProduct();
-            int finalProductPrice = product.getRetailPrice()-product.getDiscountPrice();
-            Double amount = cartProduct.getQuantity();
-            //TODO benerin logicnya
-            OrderItem orderItem = OrderItem.builder()
-                    .amount(amount)
-                    .productName(product.getProductName())
-                    .finalProductPrice(finalProductPrice)
-                    .notes(cartProduct.getNote())
-                    .profit(finalProductPrice * amount - product.getBasePrice()*amount )
-                    .totalPrice(finalProductPrice * amount)
-                    .baseProductPrice(product.getBasePrice())
-                    .build();
+            OrderItem orderItem = createOrderItem(cartProduct, product);
             order.addOrderItem(orderItem);
             total+= orderItem.getTotalPrice();
             orderItemService.save(orderItem);
@@ -57,9 +50,14 @@ public class OrderController {
         }
         order.setTotal(total);
         orderService.save(order);
+
+        cartProductService.deleteByCartId(currentUser.getPhoneNumber());
+
         return OrderResponseDto.builder()
                 .id(order.getId())
                 .total(order.getTotal())
+                .ShippingFee(order.getShippingFee())
+                .deliveryDate(order.getDeliveryDate())
                 .build();
     }
 
@@ -76,6 +74,20 @@ public class OrderController {
     @PatchMapping("/{idOrder}")
     public OrderResponseDto editDeliveryDateAndShippingFeeById(@PathVariable("idOrder") String id, @RequestBody EditOrderRequestDto request){
         return orderService.editById(id, request);
+    }
+
+    private OrderItem createOrderItem(CartProduct cartProduct, Product product){
+        int finalProductPrice = product.getRetailPrice()-product.getDiscountPrice();
+        Double amount = cartProduct.getQuantity();
+        return  OrderItem.builder()
+                .amount(amount)
+                .productName(product.getProductName())
+                .finalProductPrice(finalProductPrice)
+                .notes(cartProduct.getNote())
+                .profit(finalProductPrice * amount - product.getBasePrice()*amount )
+                .totalPrice(finalProductPrice * amount)
+                .baseProductPrice(product.getBasePrice())
+                .build();
     }
 
 
