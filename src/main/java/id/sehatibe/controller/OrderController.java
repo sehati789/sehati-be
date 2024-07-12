@@ -8,10 +8,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,10 +42,11 @@ public class OrderController {
             OrderItem orderItem = OrderItem.builder()
                     .amount(amount)
                     .productName(product.getProductName())
-                    .productPrice(finalProductPrice)
+                    .finalProductPrice(finalProductPrice)
                     .notes(cartProduct.getNote())
                     .profit(finalProductPrice * amount - product.getBasePrice()*amount )
                     .totalPrice(finalProductPrice * amount)
+                    .baseProductPrice(product.getBasePrice())
                     .build();
             order.addOrderItem(orderItem);
             total+= orderItem.getTotalPrice();
@@ -61,5 +59,10 @@ public class OrderController {
                 .id(order.getId())
                 .total(order.getTotal())
                 .build();
+    }
+
+    @GetMapping("/{idOrder}")
+    public OrderResponseDto getById(@PathVariable("idOrder") String id){
+        return orderService.getById(id);
     }
 }

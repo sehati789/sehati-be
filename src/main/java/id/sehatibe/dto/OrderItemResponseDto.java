@@ -15,10 +15,11 @@ public class OrderItemResponseDto {
     private Double amount;
 
     private String productName;
-    private int productPrice;
+    private int finalProductPrice;
 
     private String orderId;
     private Double totalPrice;
+    private int baseProductPrice;
     private Double profit;
     private String notes;
 }

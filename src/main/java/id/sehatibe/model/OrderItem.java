@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+//TODO: bikin api buat put order item skaligus ganti total di order
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,7 +18,9 @@ public class OrderItem {
     private Double amount;
 
     private String productName;
-    private int productPrice;
+    private int finalProductPrice;
+
+    private  int baseProductPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
