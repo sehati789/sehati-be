@@ -1,5 +1,6 @@
 package id.sehatibe.controller;
 
+import id.sehatibe.dto.EditOrderRequestDto;
 import id.sehatibe.dto.OrderResponseDto;
 import id.sehatibe.model.*;
 import id.sehatibe.service.*;
@@ -70,6 +71,11 @@ public class OrderController {
     public ResponseEntity<String> deleteById(@PathVariable("idOrder") String id){
         orderService.deleteById(id);
         return ResponseEntity.ok("Success deleting order with id "+id);
+    }
+
+    @PatchMapping("/{idOrder}")
+    public OrderResponseDto editDeliveryDateAndShippingFeeById(@PathVariable("idOrder") String id, @RequestBody EditOrderRequestDto request){
+        return orderService.editById(id, request);
     }
 
 

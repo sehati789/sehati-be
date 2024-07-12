@@ -1,5 +1,6 @@
 package id.sehatibe.service;
 
+import id.sehatibe.dto.EditOrderRequestDto;
 import id.sehatibe.dto.OrderResponseDto;
 import id.sehatibe.model.Order;
 import id.sehatibe.model.OrderItem;
@@ -15,7 +16,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
     public OrderResponseDto save(Order order){
-        return orderRepository.save(order);
+        orderRepository.save(order);
+        return toOrderResponseDto(order);
     }
 
     @Override
@@ -28,10 +30,22 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
+    @Override
+    public OrderResponseDto editById(String id, EditOrderRequestDto request) {
+        Order order = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Order Item not found"));
+        order.setShippingFee(request.getShippingFee());
+        order.setDeliveryDate(request.getDeliveryDate());
+        orderRepository.save(order);
+
+        return toOrderResponseDto(order);
+    }
+
     private OrderResponseDto toOrderResponseDto(Order order){
         return OrderResponseDto.builder()
                 .id(order.getId())
                 .total(order.getTotal())
+                .deliveryDate(order.getDeliveryDate())
+                .ShippingFee(order.getShippingFee())
                 .build();
     }
 }
