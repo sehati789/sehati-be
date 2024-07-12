@@ -37,7 +37,7 @@ public class OderItemServiceImpl implements OrderItemService{
     public List<OrderItem> getByOrderId(String orderId) {
             List<OrderItem> orderItems = orderItemRepository.findAllByOrder_Id(orderId);
             if(orderItems.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order doesn't exist");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order item with Order id "+ orderId+" doesn't exist");
 
             }
             return orderItems;

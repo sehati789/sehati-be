@@ -46,7 +46,6 @@ public class GlobalExceptionHandlerAuth {
         }
         if (exception instanceof ResponseStatusException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(((ResponseStatusException) exception).getStatusCode().value()), ((ResponseStatusException) exception).getReason());
-            errorDetail.setProperty("description", "User already Exist");
         }
 
 
