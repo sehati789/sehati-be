@@ -10,6 +10,7 @@ import id.sehatibe.service.OrderItemService;
 import id.sehatibe.service.OrderService;
 import id.sehatibe.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class OrderItemController {
         return ResponseEntity.ok("Success deleting order item with id "+id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public OrderItemResponseDto create(@RequestBody OrderItemRequest request){
         Order order = orderService.getById(request.getIdOrder());
